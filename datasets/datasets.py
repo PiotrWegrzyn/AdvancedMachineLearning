@@ -51,22 +51,12 @@ class CrossDataSet(DataSet):
         return self.x, self.y
 
 
-cross_ds = CrossDataSet()
-cross_ds.show()
-datasets.append(cross_ds)
-
-
 class MoonDataSet(DataSet):
 
     def generate(self):
         coords, classes = make_moons(n_samples=self.BIG_SAMPLE_SIZE, noise=0.05)
 
         return coords[:, 0], coords[:, 1]
-
-
-moon_ds = MoonDataSet()
-moon_ds.show()
-datasets.append(moon_ds)
 
 
 class RingsDataSet(DataSet):
@@ -89,11 +79,6 @@ class RingsDataSet(DataSet):
             y_coords.extend(y)
 
         return np.array(x_coords), np.array(y_coords)
-
-
-rings_ds = RingsDataSet()
-rings_ds.show()
-datasets.append(rings_ds)
 
 
 class ZigZagOutliersDataSet(DataSet):
@@ -120,12 +105,6 @@ class ZigZagOutliersDataSet(DataSet):
         return x, y
 
 
-
-zz_ds = ZigZagOutliersDataSet()
-zz_ds.show()
-datasets.append(zz_ds)
-
-
 class NoiseOutliersDataSet(DataSet):
 
     def __init__(self, radii=(2, 0.5)):
@@ -141,11 +120,6 @@ class NoiseOutliersDataSet(DataSet):
         return np.append(x, x2), np.append(y, y2)
 
 
-ns_ds = NoiseOutliersDataSet()
-ns_ds.show()
-datasets.append(ns_ds)
-
-
 class LineOutlierDataSet(DataSet):
 
     def generate(self):
@@ -156,47 +130,3 @@ class LineOutlierDataSet(DataSet):
         y2 = (np.random.random(self.SMALL_SAMPLE_SIZE) - 2) / 2
 
         return np.append(x, x2), np.append(y, y2)
-
-
-line_ds = LineOutlierDataSet()
-line_ds.show()
-datasets.append(line_ds)
-
-
-# color_tab = ['r', 'g', 'b', 'k', 'p']
-#
-#
-# fig, axes = plt.subplots(6, 3)
-# matplotlib.rcParams['figure.figsize'] = [20, 15]
-# i = 0
-# j = 0
-# data = None
-# for dataset in datasets:
-#     x = dataset.x
-#     y = dataset.y
-#
-#     input_X = np.c_[x, y]
-#     for x in range(2, 5):
-#         clf = KMeans(n_clusters=x)
-#         clf.fit(input_X)
-#         lab = clf.labels_
-#         cen = clf.cluster_centers_
-#         data = np.c_[input_X, lab]
-#         col = 0
-#         for le in np.unique(lab):
-#             dat = data[data[:, 2] == le]
-#             axes[i, j].scatter(dat[:, 0], dat[:, 1], color=color_tab[le])
-#         axes[i, j].set_title('C=: {}'.format(x))
-#         axes[i, j].grid()
-#         for centers in cen:
-#             axes[i, j].scatter(centers[0], centers[0], marker='x', s=600, linewidth=9, color=color_tab[col])
-#             col += 1
-#
-#         j += 1
-#         if j == 3:
-#             j = 0
-#     i += 1
-# plt.tight_layout()
-# plt.show()
-#
-# print(data[:, 2])
