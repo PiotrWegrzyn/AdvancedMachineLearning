@@ -1,5 +1,4 @@
 from fcmeans import FCM
-from sklearn.datasets import make_blobs
 from matplotlib import pyplot as plt
 from seaborn import scatterplot as scatter
 import numpy as np
