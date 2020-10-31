@@ -79,21 +79,3 @@ class HCM:
             group_centroid_x = np.mean(x)
             group_centroid_y = np.mean(y)
             self.centroids[g] = (group_centroid_x, group_centroid_y)
-
-
-for ds_class in datasets:
-
-    dataset = ds_class()
-
-    for n_clusters in (2, 3, 4):
-        hcm = HCM(n_clusters=n_clusters)
-        hcm.fit(dataset.x, dataset.y)
-
-        fcm_centers = np.array(hcm.centroids)
-        fcm_labels = hcm.matrix[:, 2]
-
-        f, axes = plt.subplots(1, 2, figsize=(11, 5))
-        scatter(dataset.x, dataset.y, ax=axes[0])
-        scatter(dataset.x, dataset.y, ax=axes[1], hue=fcm_labels)
-        scatter(fcm_centers[:, 0], fcm_centers[:, 1], ax=axes[1], marker="s", s=200)
-        plt.show()
