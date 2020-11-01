@@ -22,6 +22,7 @@ DATASETS = (
 N_CLUSTERS = (2, 3, 4)
 
 
+# todo refactor into a class
 def fcm_example():
 
     for ds_class in DATASETS:
@@ -96,6 +97,6 @@ def show_results(dataset, centers, labels, save=False):
 
 if __name__ == "__main__":
 
-    #fcm_example()
+    fcm_example()
 
     hcm_example()
