@@ -1,6 +1,6 @@
 from fcmeans import FCM
 from matplotlib import pyplot as plt
-from seaborn import scatterplot as scatter
+from seaborn import scatterplot as scatter, lineplot
 import numpy as np
 from datetime import datetime
 
@@ -9,94 +9,87 @@ from datasets.datasets import LineOutlierDataSet, CrossDataSet, MoonDataSet, Rin
     NoiseOutliersDataSet
 from quantifiers.quantifiers import XieBieni, FukuyamaSugeno
 
-DATASETS = (
-    LineOutlierDataSet,
-    CrossDataSet,
-    MoonDataSet,
-    RingsDataSet,
-    ZigZagOutliersDataSet,
-    NoiseOutliersDataSet,
-    LineOutlierDataSet
-)
 
-N_CLUSTERS = (2, 3, 4)
+class Example:
+    N_CLUSTERS = (2, 3, 4)
 
+    DATASETS = (
+        LineOutlierDataSet,
+        CrossDataSet,
+        MoonDataSet,
+        RingsDataSet,
+        ZigZagOutliersDataSet,
+        NoiseOutliersDataSet,
+        LineOutlierDataSet
+    )
 
-# todo refactor into a class
-def fcm_example():
+    def run(self):
 
-    for ds_class in DATASETS:
-        xb_results = []
-        fs_results = []
+        for ds_class in self.DATASETS:
+            xb_results = []
+            fs_results = []
 
-        for n_clusters in N_CLUSTERS:
+            f, axes = plt.subplots(3, 2, figsize=(11, 5), squeeze=True)
+
             dataset = ds_class()
             points_matrix = np.concatenate((dataset.x.reshape(-1, 1), dataset.y.reshape(-1, 1)), axis=1)
 
-            fcm = FCM(n_clusters=n_clusters)
-            fcm.fit(points_matrix)
+            scatter(x=dataset.x, y=dataset.y, ax=axes[0][0])
 
-            centers = fcm.centers
-            labels = fcm.u.argmax(axis=1)
+            for i, n_clusters in enumerate(self.N_CLUSTERS):
+                centers, labels = self.group_data(dataset, n_clusters)
 
-            xb = XieBieni(points_matrix, centers, 2.0)
-            fs = FukuyamaSugeno(points_matrix, centers, 2.0)
-            xb_results.append(xb.calculate())
-            fs_results.append(fs.calculate())
+                xb = XieBieni(points_matrix, centers, 2.0)
+                xb_results.append(xb.calculate())
 
-            show_results(dataset, centers, labels)
+                fs = FukuyamaSugeno(points_matrix, centers, 2.0)
+                fs_results.append(fs.calculate())
 
-        plt.subplot(1, 2, 1)
-        plt.plot(N_CLUSTERS, xb_results)
-        plt.subplot(1, 2, 2)
-        plt.plot(N_CLUSTERS, fs_results)
+                row = int((i+1) / 2)
+                col = (i+1) % 2
+                scatter(x=dataset.x, y=dataset.y, ax=axes[row][col], hue=labels)
+                scatter(x=centers[:, 0], y=centers[:, 1], ax=axes[row][col], marker="s", s=200)
 
+            axes[2][0].set_title("Xie Bieni")
+            lineplot(x=self.N_CLUSTERS, y=xb_results, ax=axes[2][0])
 
-def hcm_example():
+            axes[2][1].set_title("Fukuyama-Sugeno")
+            lineplot(x=self.N_CLUSTERS, y=fs_results, ax=axes[2][1])
 
-    for ds_class in DATASETS:
-        xb_results = []
-        fs_results = []
+            plt.show()
 
-        for n_clusters in N_CLUSTERS:
-            dataset = ds_class()
-
-            points_matrix = np.concatenate((dataset.x.reshape(-1, 1), dataset.y.reshape(-1, 1)), axis=1)
-
-            hcm = HCM(n_clusters=n_clusters)
-            hcm.fit(dataset.x, dataset.y)
-
-            centers = np.array(hcm.centroids)
-            labels = hcm.matrix[:, 2]
-
-            xb = XieBieni(points_matrix, centers, 2.0)
-            fs = FukuyamaSugeno(points_matrix, centers, 2.0)
-            xb_results.append(xb.calculate())
-            fs_results.append(fs.calculate())
-
-            show_results(dataset, centers, labels)
-
-        plt.subplot(1, 2, 1)
-        plt.plot(N_CLUSTERS, xb_results)
-        plt.subplot(1, 2, 2)
-        plt.plot(N_CLUSTERS, fs_results)
+    def group_data(self, dataset, n_clusters):
+        raise NotImplementedError
 
 
-def show_results(dataset, centers, labels, save=False):
-    f, axes = plt.subplots(1, 2, figsize=(11, 5))
+class FCMExample(Example):
+    def group_data(self, dataset, n_clusters):
+        points_matrix = np.concatenate((dataset.x.reshape(-1, 1), dataset.y.reshape(-1, 1)), axis=1)
 
-    scatter(x=dataset.x, y=dataset.y, ax=axes[0])
-    scatter(x=dataset.x, y=dataset.y, ax=axes[1], hue=labels)
-    scatter(x=centers[:, 0], y=centers[:, 1], ax=axes[1], marker="s", s=200)
+        fcm = FCM(n_clusters=n_clusters)
+        fcm.fit(points_matrix)
 
-    plt.show()
+        centers = fcm.centers
+        labels = fcm.u.argmax(axis=1)
 
-    if save:
-        plt.savefig(f'{dataset.__class__}{datetime.now().microsecond}.png', dpi=300)
+        return centers, labels
+
+
+class HCMExample(Example):
+    def group_data(self, dataset, n_clusters):
+        hcm = HCM(n_clusters=n_clusters)
+        hcm.fit(dataset.x, dataset.y)
+
+        centers = np.array(hcm.centroids)
+        labels = hcm.matrix[:, 2]
+
+        return centers, labels
 
 
 if __name__ == "__main__":
 
-    fcm_example()
+    hcm_example = HCMExample()
+    hcm_example.run()
 
-    hcm_example()
+    fcm_example = FCMExample()
+    fcm_example.run()
