@@ -1,22 +1,5 @@
 import math
-
-from matplotlib import pyplot as plt
-from seaborn import scatterplot as scatter
 import numpy as np
-
-from datasets.datasets import LineOutlierDataSet, CrossDataSet, MoonDataSet, RingsDataSet, ZigZagOutliersDataSet, \
-    NoiseOutliersDataSet
-
-
-datasets = (
-    LineOutlierDataSet,
-    CrossDataSet,
-    MoonDataSet,
-    RingsDataSet,
-    ZigZagOutliersDataSet,
-    NoiseOutliersDataSet,
-    LineOutlierDataSet
-)
 
 
 class HCM:
