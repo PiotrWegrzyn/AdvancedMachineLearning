@@ -2,7 +2,6 @@ from fcmeans import FCM
 from matplotlib import pyplot as plt
 from seaborn import scatterplot as scatter, lineplot
 import numpy as np
-from datetime import datetime
 
 from algorithms.hc_means import HCM
 from datasets.datasets import LineOutlierDataSet, CrossDataSet, MoonDataSet, RingsDataSet, ZigZagOutliersDataSet, \
