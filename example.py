@@ -85,9 +85,9 @@ def hcm_example():
 def show_results(dataset, centers, labels, save=False):
     f, axes = plt.subplots(1, 2, figsize=(11, 5))
 
-    scatter(dataset.x, dataset.y, ax=axes[0])
-    scatter(dataset.x, dataset.y, ax=axes[1], hue=labels)
-    scatter(centers[:, 0], centers[:, 1], ax=axes[1], marker="s", s=200)
+    scatter(x=dataset.x, y=dataset.y, ax=axes[0])
+    scatter(x=dataset.x, y=dataset.y, ax=axes[1], hue=labels)
+    scatter(x=centers[:, 0], y=centers[:, 1], ax=axes[1], marker="s", s=200)
 
     plt.show()
 
