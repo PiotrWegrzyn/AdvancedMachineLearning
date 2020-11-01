@@ -2,9 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 from sklearn.datasets import make_moons
-from sklearn.cluster import KMeans
-import matplotlib
-from fcmeans import FCM
+from datetime import datetime
 
 datasets = []
 
@@ -19,7 +17,7 @@ class DataSet:
     def generate(self):
         raise NotImplementedError
 
-    def show(self, x=None, y=None):
+    def show(self, x=None, y=None, save=True):
         if not x:
             x = self.x
         if not y:
@@ -28,6 +26,9 @@ class DataSet:
         self.scatter(x, y)
         plt.grid()
         plt.show()
+
+        if save:
+            plt.savefig(f'{self.__class__}{datetime.now().microsecond}.png', dpi=300)
 
     @staticmethod
     def scatter(x, y):
