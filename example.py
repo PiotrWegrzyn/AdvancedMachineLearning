@@ -85,9 +85,9 @@ class HCMExample(Example):
 
 
 if __name__ == "__main__":
-    #
-    # hcm_example = HCMExample()
-    # hcm_example.run()
+
+    hcm_example = HCMExample()
+    hcm_example.run()
 
     fcm_example = FCMExample()
     fcm_example.run()
