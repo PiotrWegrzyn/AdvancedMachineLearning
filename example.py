@@ -20,7 +20,6 @@ class Example:
         RingsDataSet,
         ZigZagOutliersDataSet,
         NoiseOutliersDataSet,
-        LineOutlierDataSet
     )
 
     def run(self):
@@ -29,7 +28,7 @@ class Example:
             xb_results = []
             fs_results = []
 
-            f, axes = plt.subplots(3, 2, figsize=(11, 5), squeeze=True)
+            f, axes = plt.subplots(3, 2, figsize=(11, 15), squeeze=True)
 
             dataset = ds_class()
             points_matrix = np.concatenate((dataset.x.reshape(-1, 1), dataset.y.reshape(-1, 1)), axis=1)
@@ -87,9 +86,9 @@ class HCMExample(Example):
 
 
 if __name__ == "__main__":
-
-    hcm_example = HCMExample()
-    hcm_example.run()
+    #
+    # hcm_example = HCMExample()
+    # hcm_example.run()
 
     fcm_example = FCMExample()
     fcm_example.run()
