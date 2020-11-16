@@ -11,11 +11,17 @@ datasets = []
 
 class DataSet:
     BIG_SAMPLE_SIZE = 1000
-    SMALL_SAMPLE_SIZE = 100
-    DISTORTION = 0.3
+    SMALL_SAMPLE_SIZE = 200
+    DISTORTION = 0.2
 
     def __init__(self):
         self.x, self.y, self.z = self.generate()
+
+    def get_data_2d(self):
+        return np.concatenate((self.x.reshape(-1, 1), self.y.reshape(-1, 1)), axis=1)
+
+    def get_data_3d(self):
+        return np.concatenate((self.x.reshape(-1, 1), self.y.reshape(-1, 1), self.z.reshape(-1, 1)), axis=1)
 
     def generate(self):
         raise NotImplementedError
