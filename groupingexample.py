@@ -9,7 +9,7 @@ from datasets.datasets import LineOutlierDataSet, CrossDataSet, MoonDataSet, Rin
 from quantifiers.quantifiers import XieBieni, FukuyamaSugeno
 
 
-class Example:
+class GroupingExample:
     N_CLUSTERS = (2, 3, 4)
 
     DATASETS = (
@@ -27,7 +27,7 @@ class Example:
             xb_results = []
             fs_results = []
 
-            f, axes = plt.subplots(3, 2, figsize=(11, 15), squeeze=True)
+            fig, axes = plt.subplots(3, 2, figsize=(11, 15), squeeze=True)
 
             dataset = ds_class()
             points_matrix = np.concatenate((dataset.x.reshape(-1, 1), dataset.y.reshape(-1, 1)), axis=1)
@@ -60,7 +60,7 @@ class Example:
         raise NotImplementedError
 
 
-class FCMExample(Example):
+class FCMGroupingExample(GroupingExample):
     def group_data(self, dataset, n_clusters):
         points_matrix = np.concatenate((dataset.x.reshape(-1, 1), dataset.y.reshape(-1, 1)), axis=1)
 
@@ -73,7 +73,7 @@ class FCMExample(Example):
         return centers, labels
 
 
-class HCMExample(Example):
+class HCMGroupingExample(GroupingExample):
     def group_data(self, dataset, n_clusters):
         hcm = HCM(n_clusters=n_clusters)
         hcm.fit(dataset.x, dataset.y)
@@ -86,8 +86,9 @@ class HCMExample(Example):
 
 if __name__ == "__main__":
 
-    hcm_example = HCMExample()
+    # Project 01
+    hcm_example = HCMGroupingExample()
     hcm_example.run()
 
-    fcm_example = FCMExample()
+    fcm_example = FCMGroupingExample()
     fcm_example.run()
