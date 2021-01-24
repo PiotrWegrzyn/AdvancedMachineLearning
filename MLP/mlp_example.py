@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPClassifier
 
 
-data = pd.read_csv('banknotes.txt', sep=",")
+data = pd.read_csv('../datasets/banknotes.txt', sep=",")
 
 print(data.head())
 
